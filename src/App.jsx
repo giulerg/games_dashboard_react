@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { DashboardView } from './components/DashboardView'
+import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { SessionView } from './components/SessionView'
 import { useGamesData } from './hooks/useGamesData'
@@ -19,6 +20,7 @@ function App() {
       ) : (
         <SessionView sessionLog={sessionLog} />
       )}
+      <Footer />
     </main>
   )
 }

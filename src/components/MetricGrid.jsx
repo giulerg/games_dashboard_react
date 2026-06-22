@@ -20,13 +20,6 @@ export function MetricGrid({ dashboard, status }) {
         <strong>{loadingValue ?? dashboard.genres}</strong>
       </article>
       <article className="metric-card">
-        <span>Top Genre</span>
-        <strong className="metric-text">
-          {loadingValue ?? dashboard.topGenre?.name ?? '-'}
-        </strong>
-        {!loadingValue && dashboard.topGenre ? <small>{dashboard.topGenre.value} games</small> : null}
-      </article>
-      <article className="metric-card">
         <span>Best Year</span>
         <strong>{loadingValue ?? dashboard.bestYear?.year ?? '-'}</strong>
         {!loadingValue && dashboard.bestYear ? <small>{dashboard.bestYear.games} releases</small> : null}

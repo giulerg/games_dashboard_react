@@ -1,4 +1,6 @@
 .app-shell {
+  display: flex;
+  flex-direction: column;
   min-height: 100svh;
   color: #231827;
 }
@@ -105,14 +107,10 @@
 
 .dashboard-view,
 .session-view {
-  padding: 34px 28px 46px;
+  padding: 34px 28px 34px;
 }
 
 .page-heading {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 24px;
   margin-bottom: 24px;
   text-align: left;
 }
@@ -126,21 +124,6 @@
   color: #201127;
 }
 
-.page-heading p {
-  max-width: 340px;
-  color: #7b6a80;
-  font-size: 14px;
-}
-
-.eyebrow {
-  margin: 0;
-  color: #db2777;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .metric-grid,
 .chart-grid {
   display: grid;
@@ -149,7 +132,7 @@
 
 .filters-panel {
   display: grid;
-  grid-template-columns: minmax(170px, 0.7fr) minmax(220px, 1fr) minmax(220px, 1fr) minmax(260px, 1.15fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   align-items: stretch;
   margin-bottom: 18px;
@@ -160,7 +143,6 @@
   box-shadow: 0 18px 50px rgba(76, 29, 149, 0.07);
 }
 
-.filters-summary,
 .filter-control {
   min-width: 0;
   border: 1px solid rgba(219, 39, 119, 0.12);
@@ -168,23 +150,6 @@
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(253, 244, 255, 0.82));
 }
 
-.filters-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 13px;
-}
-
-.filters-summary strong {
-  display: block;
-  margin-top: 4px;
-  color: #31113d;
-  font-size: 20px;
-  line-height: 1;
-}
-
-.filters-summary button,
 .select-action {
   border: 0;
   border-radius: 7px;
@@ -194,17 +159,6 @@
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
-}
-
-.filters-summary button {
-  min-height: 34px;
-  padding: 0 12px;
-}
-
-.filters-summary button:disabled {
-  color: #b7a5bb;
-  background: #f5edf7;
-  cursor: default;
 }
 
 .filter-control {
@@ -323,7 +277,7 @@
 }
 
 .metric-grid {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   margin-bottom: 18px;
 }
 
@@ -373,13 +327,13 @@
 }
 
 .chart-grid {
-  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.9fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .chart-card {
   min-height: 390px;
   padding: 20px;
-  overflow: hidden;
+  overflow: visible;
   text-align: left;
 }
 
@@ -402,10 +356,32 @@
   letter-spacing: 0;
 }
 
-.card-heading span {
-  color: #9b7aa1;
-  font-size: 13px;
-  font-weight: 700;
+.score-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(168, 85, 247, 0.16);
+  border-radius: 8px;
+  background: #fbf7ff;
+}
+
+.score-toggle button {
+  min-height: 28px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 6px;
+  color: #7c2d80;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.score-toggle button.active {
+  color: #fff;
+  background: linear-gradient(135deg, #db2777, #8b5cf6);
 }
 
 .legend-list {
@@ -435,6 +411,11 @@
   gap: 12px;
 }
 
+.top-list.compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
 .top-game {
   display: flex;
   align-items: center;
@@ -445,15 +426,40 @@
   background: linear-gradient(135deg, rgba(252, 231, 243, 0.88), rgba(245, 243, 255, 0.9));
 }
 
+.top-list.compact .top-game {
+  gap: 8px;
+  padding: 10px;
+}
+
+.top-game > div:nth-child(2) {
+  min-width: 0;
+}
+
+.top-rank {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 999px;
+  color: #8b1d5b;
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  font-weight: 900;
+}
+
 .top-game strong,
 .top-game span {
   display: block;
 }
 
 .top-game strong {
+  overflow: hidden;
   color: #2c1736;
   font-size: 14px;
   line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .top-game span {
@@ -471,6 +477,17 @@
   border-radius: 8px;
   color: #fff;
   background: #8b5cf6;
+}
+
+.top-list.compact .top-rank {
+  width: 25px;
+  height: 25px;
+}
+
+.top-list.compact .top-game b {
+  width: 38px;
+  height: 34px;
+  font-size: 13px;
 }
 
 .empty-state {
@@ -506,6 +523,76 @@
   font-size: 12px;
 }
 
+.recharts-wrapper,
+.recharts-sector,
+.recharts-bar-rectangle,
+.recharts-line-curve {
+  cursor: pointer;
+}
+
+.app-footer {
+  position: relative;
+  display: grid;
+  place-items: center;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin-top: auto;
+  padding: 30px 24px 34px;
+  color: #ede9fe;
+  text-align: center;
+  background: linear-gradient(135deg, #5b21b6, #7c3aed 48%, #8b5cf6);
+  box-shadow: 0 -18px 60px rgba(76, 29, 149, 0.16);
+}
+
+.app-footer strong {
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.app-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.app-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+.app-footer a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 28px rgba(49, 18, 88, 0.2);
+  transform: translateY(-1px);
+}
+
+.app-footer svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
 @media (max-width: 900px) {
   .topbar {
     grid-template-columns: 1fr;
@@ -536,10 +623,6 @@
     font-size: 30px;
   }
 
-  .page-heading p {
-    margin-top: 10px;
-  }
-
   .metric-grid,
   .chart-grid {
     grid-template-columns: 1fr;
@@ -552,10 +635,30 @@
   .chart-card {
     min-height: 360px;
   }
+
+  .top-list.compact {
+    grid-template-columns: 1fr;
+  }
+
+  .app-footer {
+    padding: 26px 16px 30px;
+  }
 }
 
 @media (min-width: 901px) and (max-width: 1200px) {
   .metric-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .chart-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filters-panel {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .top-list.compact {
+    grid-template-columns: 1fr;
   }
 }

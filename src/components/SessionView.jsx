@@ -3,12 +3,8 @@ export function SessionView({ sessionLog }) {
     <section className="session-view">
       <div className="page-heading">
         <div>
-          <p className="eyebrow">LLM Session</p>
           <h1>Session log</h1>
         </div>
-        <p>
-          Текст будет подтянут из <strong>public/data/llm-session.log</strong>
-        </p>
       </div>
       <pre className={sessionLog ? 'log-panel' : 'log-panel empty'}>
         {sessionLog ||

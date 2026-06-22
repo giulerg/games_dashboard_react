@@ -6,10 +6,28 @@ export function useDashboardData(games) {
     const genreMap = new Map()
     const platformMap = new Map()
     const yearMap = new Map()
+    const scoreGenreMap = new Map()
 
     games.forEach((game) => {
       if (game.Genre) {
         genreMap.set(game.Genre, (genreMap.get(game.Genre) ?? 0) + 1)
+      }
+
+      if (
+        game.Genre &&
+        Number.isFinite(game.Critic_Score) &&
+        Number.isFinite(game.User_Score)
+      ) {
+        const scoreGenre = scoreGenreMap.get(game.Genre) ?? {
+          genre: game.Genre,
+          games: 0,
+          criticScores: [],
+          userScores: [],
+        }
+        scoreGenre.games += 1
+        scoreGenre.criticScores.push(game.Critic_Score)
+        scoreGenre.userScores.push(game.User_Score)
+        scoreGenreMap.set(game.Genre, scoreGenre)
       }
 
       if (game.Platform) {
@@ -51,33 +69,30 @@ export function useDashboardData(games) {
       .slice(0, 8)
 
     const yearData = [...yearMap.values()].sort((a, b) => a.year - b.year)
-    const topGenre = genreData[0] ?? null
     const bestYear =
       [...yearMap.values()].sort((a, b) => b.games - a.games || b.year - a.year)[0] ??
       null
 
-    const scoreComparisonData = games
-      .filter(
-        (game) =>
-          Number.isFinite(game.Critic_Score) && Number.isFinite(game.User_Score),
-      )
-      .map((game) => ({
-        name: game.Name,
-        platform: game.Platform,
-        genre: game.Genre,
-        critic: game.Critic_Score,
-        user: game.User_Score,
+    const scoreComparisonData = [...scoreGenreMap.values()]
+      .map((genre) => ({
+        name: genre.genre,
+        games: genre.games,
+        critic: Number(average(genre.criticScores).toFixed(1)),
+        criticScaled: Number((average(genre.criticScores) / 10).toFixed(1)),
+        user: Number(average(genre.userScores).toFixed(1)),
       }))
+      .sort((a, b) => b.games - a.games)
+      
 
     const topCriticGames = [...games]
       .filter((game) => Number.isFinite(game.Critic_Score))
       .sort((a, b) => b.Critic_Score - a.Critic_Score)
-      .slice(0, 5)
+      .slice(0, 10)
 
     const topUserGames = [...games]
       .filter((game) => Number.isFinite(game.User_Score))
       .sort((a, b) => b.User_Score - a.User_Score)
-      .slice(0, 5)
+      .slice(0, 10)
 
     return {
       genreData,
@@ -85,14 +100,12 @@ export function useDashboardData(games) {
       scoreComparisonData,
       yearData,
       topCriticGames,
-      topGames: topCriticGames,
       topUserGames,
       total: games.length,
       avgCritic: average(games.map((game) => game.Critic_Score)).toFixed(1),
       avgUser: average(games.map((game) => game.User_Score)).toFixed(1),
       bestYear,
       genres: genreMap.size,
-      topGenre,
     }
   }, [games])
 }

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Bar,
   BarChart,
@@ -8,16 +9,35 @@ import {
   Pie,
   PieChart,
   ResponsiveContainer,
-  Scatter,
-  ScatterChart,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts'
 
 const COLORS = ['#7c3aed', '#db2777', '#f472b6', '#a855f7', '#fb7185', '#8b5cf6']
+const SCORE_LIMITS = [5, 10]
+
+function ScoreLimitToggle({ value, onChange }) {
+  return (
+    <div className="score-toggle" aria-label="Top score limit">
+      {SCORE_LIMITS.map((limit) => (
+        <button
+          className={value === limit ? 'active' : ''}
+          key={limit}
+          type="button"
+          onClick={() => onChange(limit)}
+        >
+          Best {limit}
+        </button>
+      ))}
+    </div>
+  )
+}
 
 export function DashboardCharts({ dashboard }) {
+  const [criticLimit, setCriticLimit] = useState(5)
+  const [userLimit, setUserLimit] = useState(5)
+
   if (dashboard.total === 0) {
     return (
       <div className="empty-state">
@@ -26,12 +46,16 @@ export function DashboardCharts({ dashboard }) {
     )
   }
 
+  const topCriticGames = dashboard.topCriticGames.slice(0, criticLimit)
+  const topUserGames = dashboard.topUserGames.slice(0, userLimit)
+  const criticListClassName = criticLimit === 10 ? 'top-list compact' : 'top-list'
+  const userListClassName = userLimit === 10 ? 'top-list compact' : 'top-list'
+
   return (
     <section className="chart-grid">
-      <article className="chart-card wide">
+      <article className="chart-card">
         <div className="card-heading">
           <h2>Releases by year</h2>
-          <span>filtered</span>
         </div>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={dashboard.yearData}>
@@ -52,46 +76,7 @@ export function DashboardCharts({ dashboard }) {
 
       <article className="chart-card">
         <div className="card-heading">
-          <h2>Critic vs user score</h2>
-          <span>scatter</span>
-        </div>
-        <ResponsiveContainer width="100%" height={300}>
-          <ScatterChart>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis
-              dataKey="critic"
-              domain={[0, 100]}
-              name="Critic"
-              tickLine={false}
-              type="number"
-              axisLine={false}
-            />
-            <YAxis
-              dataKey="user"
-              domain={[0, 10]}
-              name="User"
-              tickLine={false}
-              type="number"
-              axisLine={false}
-              width={34}
-            />
-            <Tooltip
-              cursor={{ strokeDasharray: '3 3' }}
-              formatter={(value, name) => [
-                value,
-                name === 'critic' ? 'Critic' : 'User',
-              ]}
-              labelFormatter={(_, items) => items?.[0]?.payload?.name ?? ''}
-            />
-            <Scatter data={dashboard.scoreComparisonData} fill="#db2777" />
-          </ScatterChart>
-        </ResponsiveContainer>
-      </article>
-
-      <article className="chart-card">
-        <div className="card-heading">
           <h2>Top genres</h2>
-          <span>by count</span>
         </div>
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>
@@ -120,10 +105,39 @@ export function DashboardCharts({ dashboard }) {
         </div>
       </article>
 
-      <article className="chart-card wide">
+      <article className="chart-card">
+        <div className="card-heading">
+          <h2>Critic vs user score</h2>
+        </div>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={dashboard.scoreComparisonData}
+            barGap={4}
+            barCategoryGap="24%"
+            margin={{ bottom: 34 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis
+              dataKey="name"
+              interval={0}
+              tickLine={false}
+              axisLine={false}
+              angle={-35}
+              height={56}
+              textAnchor="end"
+              tick={{ fontSize: 11 }}
+            />
+            <YAxis domain={[0, 10]} tickLine={false} axisLine={false} width={34} />
+            <Tooltip />
+            <Bar dataKey="criticScaled" name="Avg critic / 10" fill="#8b5cf6" radius={[7, 7, 0, 0]} />
+            <Bar dataKey="user" name="Avg user" fill="#db2777" radius={[7, 7, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </article>
+
+      <article className="chart-card">
         <div className="card-heading">
           <h2>Platforms</h2>
-          <span>top 8 by games</span>
         </div>
         <ResponsiveContainer width="100%" height={310}>
           <BarChart data={dashboard.platformData}>
@@ -136,14 +150,15 @@ export function DashboardCharts({ dashboard }) {
         </ResponsiveContainer>
       </article>
 
-      <article className="chart-card">
+      <article className="chart-card score-card">
         <div className="card-heading">
           <h2>Top critic scores</h2>
-          <span>best 5</span>
+          <ScoreLimitToggle value={criticLimit} onChange={setCriticLimit} />
         </div>
-        <div className="top-list">
-          {dashboard.topCriticGames.map((game) => (
+        <div className={criticListClassName}>
+          {topCriticGames.map((game, index) => (
             <div className="top-game" key={`${game.Name}-${game.Platform}`}>
+              <div className="top-rank">{index + 1}</div>
               <div>
                 <strong>{game.Name}</strong>
                 <span>
@@ -156,14 +171,15 @@ export function DashboardCharts({ dashboard }) {
         </div>
       </article>
 
-      <article className="chart-card">
+      <article className="chart-card score-card">
         <div className="card-heading">
           <h2>Top user scores</h2>
-          <span>best 5</span>
+          <ScoreLimitToggle value={userLimit} onChange={setUserLimit} />
         </div>
-        <div className="top-list">
-          {dashboard.topUserGames.map((game) => (
+        <div className={userListClassName}>
+          {topUserGames.map((game, index) => (
             <div className="top-game" key={`${game.Name}-${game.Platform}-user`}>
+              <div className="top-rank">{index + 1}</div>
               <div>
                 <strong>{game.Name}</strong>
                 <span>

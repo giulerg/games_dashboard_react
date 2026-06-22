@@ -7,11 +7,9 @@ import { MetricGrid } from './MetricGrid'
 
 export function DashboardView({ games, status }) {
   const {
-    activeFilterCount,
     filteredGames,
     filterOptions,
     filters,
-    resetFilters,
     updateGenres,
     updatePlatforms,
     updateYearRange,
@@ -22,29 +20,21 @@ export function DashboardView({ games, status }) {
     <section className="dashboard-view">
       <div className="page-heading">
         <div>
-          <p className="eyebrow">CSV analytics</p>
-          <h1>Game releases, scores, and genres</h1>
+          <h1>Video Games Overview, 1990-2010</h1>
         </div>
-        <p>
-          Dashboard built from <strong>public/data/games_cleaned.csv</strong>
-        </p>
       </div>
 
       {status === 'error' ? (
         <div className="empty-state">
-          Не удалось загрузить CSV из <code>{CSV_URL}</code>
+          Could not load CSV from <code>{CSV_URL}</code>
         </div>
       ) : (
         <>
           <FilterPanel
-            activeFilterCount={activeFilterCount}
-            filteredCount={filteredGames.length}
             filters={filters}
             options={filterOptions}
-            totalCount={games.length}
             onGenresChange={updateGenres}
             onPlatformsChange={updatePlatforms}
-            onReset={resetFilters}
             onYearRangeChange={updateYearRange}
           />
           <MetricGrid dashboard={dashboard} status={status} />

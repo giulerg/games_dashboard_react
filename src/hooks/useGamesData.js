@@ -3,6 +3,15 @@ import { parseCsv } from '../utils/csv'
 
 export const CSV_URL = '/data/games_cleaned.csv'
 
+function normalizeGame(game) {
+  return {
+    ...game,
+    Year_of_Release: Number(game.Year_of_Release),
+    Critic_Score: Number(game.Critic_Score),
+    User_Score: Number(game.User_Score),
+  }
+}
+
 export function useGamesData() {
   const [games, setGames] = useState([])
   const [status, setStatus] = useState('loading')
@@ -18,12 +27,7 @@ export function useGamesData() {
       .then((text) => {
         if (ignore) return
 
-        const parsedGames = parseCsv(text).map((game) => ({
-          ...game,
-          Year_of_Release: Number(game.Year_of_Release),
-          Critic_Score: Number(game.Critic_Score),
-          User_Score: Number(game.User_Score),
-        }))
+        const parsedGames = parseCsv(text).map(normalizeGame)
 
         setGames(parsedGames)
         setStatus('ready')

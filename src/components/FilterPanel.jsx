@@ -1,14 +1,10 @@
 import { MultiSelectFilter } from './MultiSelectFilter'
 
 export function FilterPanel({
-  activeFilterCount,
   filters,
-  filteredCount,
   options,
-  totalCount,
   onGenresChange,
   onPlatformsChange,
-  onReset,
   onYearRangeChange,
 }) {
   const minYear = options.yearBounds.min
@@ -27,18 +23,6 @@ export function FilterPanel({
 
   return (
     <section className="filters-panel" aria-label="Dashboard filters">
-      <div className="filters-summary">
-        <div>
-          <span className="filter-label">Filters</span>
-          <strong>
-            {filteredCount} / {totalCount}
-          </strong>
-        </div>
-        <button type="button" onClick={onReset} disabled={activeFilterCount === 0}>
-          Reset
-        </button>
-      </div>
-
       <MultiSelectFilter
         label="Platform"
         options={options.platforms}

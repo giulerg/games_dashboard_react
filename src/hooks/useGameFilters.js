@@ -65,22 +65,6 @@ export function useGameFilters(games) {
     setFilters((current) => ({ ...current, yearRange }))
   }
 
-  const resetFilters = () => {
-    setFilters({
-      platforms: [],
-      genres: [],
-      yearRange: filterOptions.yearBounds,
-    })
-  }
-
-  const activeFilterCount =
-    filters.platforms.length +
-    filters.genres.length +
-    (effectiveYearRange.min !== filterOptions.yearBounds.min ||
-    effectiveYearRange.max !== filterOptions.yearBounds.max
-      ? 1
-      : 0)
-
   return {
     filteredGames,
     filterOptions,
@@ -88,10 +72,8 @@ export function useGameFilters(games) {
       ...filters,
       yearRange: effectiveYearRange,
     },
-    activeFilterCount,
     updatePlatforms,
     updateGenres,
     updateYearRange,
-    resetFilters,
   }
 }
