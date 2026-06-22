@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { parseCsv } from '../utils/csv'
 
-export const CSV_URL = `${import.meta.env.BASE_URL}data/games_cleaned.csv`
+export const CSV_URL = 'data/games_cleaned.csv'
 
 function normalizeGame(game) {
   return {

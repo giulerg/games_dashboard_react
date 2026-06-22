@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const LOG_URL = `${import.meta.env.BASE_URL}data/llm-session.log`
+const LOG_URL = 'data/llm-session.log'
 
 export function useSessionLog() {
   const [sessionLog, setSessionLog] = useState('')
