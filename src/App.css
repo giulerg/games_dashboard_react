@@ -10,7 +10,7 @@
   top: 0;
   z-index: 5;
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) auto minmax(140px, 1fr);
+  grid-template-columns: minmax(220px, 1fr) auto;
   align-items: center;
   gap: 18px;
   padding: 18px 28px;
@@ -50,15 +50,6 @@
   stroke-width: 3;
 }
 
-.tabs {
-  display: inline-flex;
-  padding: 5px;
-  border: 1px solid rgba(168, 85, 247, 0.18);
-  border-radius: 8px;
-  background: #fbf7ff;
-}
-
-.tab,
 .download-button {
   min-height: 40px;
   border: 0;
@@ -73,20 +64,6 @@
     background 160ms ease;
 }
 
-.tab {
-  min-width: 118px;
-  padding: 0 16px;
-  color: #7c2d80;
-  background: transparent;
-}
-
-.tab.active {
-  color: #fff;
-  background: linear-gradient(135deg, #db2777, #8b5cf6);
-  box-shadow: 0 12px 26px rgba(139, 92, 246, 0.24);
-}
-
-.tab:hover,
 .download-button:hover {
   transform: translateY(-1px);
 }
@@ -105,8 +82,7 @@
   box-shadow: 0 10px 30px rgba(76, 29, 149, 0.08);
 }
 
-.dashboard-view,
-.session-view {
+.dashboard-view {
   padding: 34px 28px 34px;
 }
 
@@ -283,8 +259,7 @@
 
 .metric-card,
 .chart-card,
-.empty-state,
-.log-panel {
+.empty-state {
   border: 1px solid rgba(168, 85, 247, 0.14);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.88);
@@ -496,24 +471,6 @@
   text-align: left;
 }
 
-.log-panel {
-  min-height: 520px;
-  margin: 0;
-  padding: 22px;
-  overflow: auto;
-  color: #2c1736;
-  font: 14px/1.65 ui-monospace, SFMono-Regular, Consolas, monospace;
-  text-align: left;
-  white-space: pre-wrap;
-}
-
-.log-panel.empty {
-  display: grid;
-  place-items: center;
-  color: #8c7293;
-  text-align: center;
-}
-
 .recharts-cartesian-grid line {
   stroke: rgba(168, 85, 247, 0.14);
 }
@@ -600,18 +557,15 @@
     padding: 16px;
   }
 
-  .tabs,
   .download-button {
     justify-self: stretch;
   }
 
-  .tab,
   .download-button {
     width: 100%;
   }
 
-  .dashboard-view,
-  .session-view {
+  .dashboard-view {
     padding: 24px 16px 34px;
   }
 

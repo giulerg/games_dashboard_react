@@ -1,6 +1,6 @@
 import { CSV_URL } from '../hooks/useGamesData'
 
-export function Header({ activeTab, onTabChange }) {
+export function Header() {
   return (
     <header className="topbar">
       <div className="brand">
@@ -12,23 +12,6 @@ export function Header({ activeTab, onTabChange }) {
         </span>
         <span>Games Dashboard</span>
       </div>
-
-      <nav className="tabs" aria-label="Sections">
-        <button
-          className={activeTab === 'dashboard' ? 'tab active' : 'tab'}
-          type="button"
-          onClick={() => onTabChange('dashboard')}
-        >
-          Dashboard
-        </button>
-        <button
-          className={activeTab === 'llm' ? 'tab active' : 'tab'}
-          type="button"
-          onClick={() => onTabChange('llm')}
-        >
-          LLM Session
-        </button>
-      </nav>
 
       <a className="download-button" href={CSV_URL} download="games.csv">
         games.csv

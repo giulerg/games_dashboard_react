@@ -6,10 +6,7 @@ Live demo: `https://giulerg.github.io/games_dashboard_react/`
 
 ## Overview
 
-The app has two tabs on one page:
-
-- `Dashboard` - interactive visual analytics for the games dataset.
-- `LLM Session` - a structured Russian-language log of the LLM-assisted build process, prompts, iterations, fixes, and verification notes.
+The app is a single dashboard page with interactive visual analytics for the games dataset.
 
 ## Dataset
 
@@ -72,12 +69,10 @@ src/
     Header.jsx
     MetricGrid.jsx
     MultiSelectFilter.jsx
-    SessionView.jsx
   hooks/
     useDashboardData.js
     useGameFilters.js
     useGamesData.js
-    useSessionLog.js
   utils/
     csv.js
 ```
@@ -146,13 +141,3 @@ Manual checks performed during development:
 - Confirmed `npm run lint` passes.
 
 Note: in the local Codex sandbox, `npm run build` can fail with Windows `spawn EPERM` while loading Vite config. This is an environment restriction, not a project code error. The GitHub Actions workflow runs on Ubuntu and should not hit that sandbox-specific issue.
-
-## LLM Session Log
-
-The LLM work log is stored at:
-
-```text
-public/data/llm-session.log
-```
-
-The second tab loads this file directly and displays it as the project session log.
